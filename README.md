@@ -6,14 +6,8 @@
 
 ### Pre-requisitos 📋
 _ _
-```c++
-#include <iostream>
-using namespace std;
-
-int main() {
-  cout << "vamos a utilizar c++";
-  return 0;
-}
+```py
+print("Usaremos Python para el algoritmo")
 ```
 ## Autores ✒️
 
