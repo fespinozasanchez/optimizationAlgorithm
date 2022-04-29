@@ -6,11 +6,15 @@
 
 ### Pre-requisitos 📋
 _ _
+''
+#include <iostream>
+using namespace std;
 
-```c
-printf ("Vamos a utilizar C++");
-```
-
+int main() {
+  cout << "vamos a utilizar c++";
+  return 0;
+}
+''
 ## Autores ✒️
 
 _Programadores que Ayudaron al Desarrollo de este sencillo Algoritmo en C++_
