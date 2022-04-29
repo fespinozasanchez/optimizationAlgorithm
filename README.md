@@ -6,7 +6,7 @@
 
 ### Pre-requisitos 📋
 _ _
-''
+```c++
 #include <iostream>
 using namespace std;
 
@@ -14,7 +14,7 @@ int main() {
   cout << "vamos a utilizar c++";
   return 0;
 }
-''
+```
 ## Autores ✒️
 
 _Programadores que Ayudaron al Desarrollo de este sencillo Algoritmo en C++_
