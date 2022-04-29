@@ -1,20 +1,6 @@
 from math import pow as p
 import numpy as np
 
-x = x1 = x2 = 0
-thetaV = 0.0
-deltaXV = 0.0
-
-def objectiveFunction(x1, x2, thetaV):
-    """
-
-    :param x1:Expect the x1 value for the objective function.
-    :param x2:Expect the x2 value for the objective function.
-    :param thetaV:Expect the θ value for the objective function , is a constant that represents the risk .
-    :return:The function evaluated ,Z Value.
-    """
-    return 1.20 * x1 + 1.16 * x2 - thetaV *  (2*p(x1, 2) + p(x2, 2)+p((x1+x2), 2))
-    
 def bruteForce(thetaV, deltaXV, list=[]):
     """
     This function applies brute force to find all suboptimal solutions given a restriction and save the points evaluated and its value Z.
@@ -27,9 +13,10 @@ def bruteForce(thetaV, deltaXV, list=[]):
         for x1 in np.arange(0, 6, deltaXV):
             for x2 in np.arange(0, 6, deltaXV):
                 if((x1 + x2) <= 5):
-                    evA = objectiveFunction(x1,x2,thetaV)
+                    evA = 1.20 * x1 + 1.16 * x2 - thetaV *  (2*p(x1, 2) + p(x2, 2)+p((x1+x2), 2))
                 x = (x1, x2)
                 list.append((x, evA))
+                
     except Exception as e:
         print(e)
     return list
