@@ -10,7 +10,7 @@ def objectiveFunction(x1, x2, thetaV):
 
     :param x1:Expect the x1 value for the objective function.
     :param x2:Expect the x2 value for the objective function.
-    :param thetaV:Expect the θ value for the objective function.
+    :param thetaV:Expect the θ value for the objective function , is a constant that represents the risk .
     :return:The function evaluated ,Z Value.
     """
     return 1.20 * x1 + 1.16 * x2 - thetaV *  (2*p(x1, 2) + p(x2, 2)+p((x1+x2), 2))
