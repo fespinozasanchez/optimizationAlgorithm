@@ -1,18 +1,14 @@
-
-from cProfile import label
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 def f(x):
     """
-    > The function `f` takes a number `x` and returns the value of the quadratic function (x) = x^2 +
-    2x + 1$
+    It takes a number as input and returns a number as output
     
-    :param x: the variable
-    :return: the value of the function f(x)
+    :param x: the x-coordinate of the point
+    :return: the value of the function f(x) at the point x.
     """
-    return x**2+2*x+1
+    return (x-1.5)**2+0.5
 
 
 def verify(x_a, x_b, lamb):
@@ -47,7 +43,7 @@ def graph(f, x_a, x_b, lamb, verify):
     :param lamb: the value of lambda
     :param verify: the verification of the convexity/concavity
     """
-    x = [i for i in np.arange(-10, 10, 0.1)]
+    x = [i for i in np.arange(-4, 4, 0.1)]
     y = [f(i) for i in x]
     x_a = [i for i in np.arange(x_a, x_b, 0.1)]
     y_a = [f(lamb*i+(1-lamb)*i) for i in x_a]
