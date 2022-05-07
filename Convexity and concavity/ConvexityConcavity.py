@@ -38,23 +38,27 @@ def verify(x_a, x_b, lamb):
 
 def graph(f, x_a, x_b, lamb, verify):
     """
-    It takes a function, two points, a lambda value, and a string, and plots the function and the line
-    between the two points
+    It takes a function, two points, a lambda value, and a string, and plots the function, the
+    interpolation between the two points, and the string
     
-    :param f: the function to be tested
-    :param x_a: the first x value
+    :param f: the function to be plotted
+    :param x_a: the first point
     :param x_b: the second point
-    :param lamb: the value of λ
-    :param verify: the string that will be displayed in the legend
+    :param lamb: the value of lambda
+    :param verify: the verification of the convexity/concavity
     """
     x = [i for i in np.arange(-10, 10, 0.1)]
     y = [f(i) for i in x]
     x_a = [i for i in np.arange(x_a, x_b, 0.1)]
     y_a = [f(lamb*i+(1-lamb)*i) for i in x_a]
 
+    yinterp = np.interp(x, x_a, y_a)
+
     plt.title('Convexity and concavity')
+
     plt.plot(x, y, color="black", label="f(x)")
     plt.plot(x_a, y_a, color="blue", label="f(λ*x_a+(1-λ)*x_b)\n"+verify)
+    plt.plot(x,yinterp, color='red',label='interpolation')
     plt.legend()
     plt.show()
 
