@@ -35,6 +35,21 @@ def verify(x_a, x_b, lamb, fStr):
         return 'Not determined'
 
 def points(f,g,x_a,x_b,lamb):
+    """
+    It takes in a function, a constraint, a lower bound, an upper bound, and a lambda value, and returns
+    a list of x and y values for the function, the expected function, and the interpolated function
+    
+    :param f: the function to be optimized
+    :param g: the function that we're trying to minimize
+    :param x_a: the lower bound of the interval
+    :param x_b: the upper bound of the interval
+    :param lamb: the lambda value
+    :return: a list of lists. The first list contains the x values for the function f, the second list
+    contains the y values for the function f, the third list contains the x values for the function f
+    with the exponential function g, the fourth list contains the y values for the function f with the
+    exponential function g, the fifth list contains the x values for the interpolation of the
+    exponential
+    """
     isVerify = verify(x_a, x_b, lamb, g)
     x = [i for i in np.arange(-4, 4, 0.1)]
     y = [f((i), g) for i in x]
@@ -46,6 +61,11 @@ def points(f,g,x_a,x_b,lamb):
 
 
 def graph(Points):
+    """
+    It takes a list of points and plots them on a graph
+    
+    :param Points: a tuple of the following:
+    """
     x,y,xExp,yExp,xInter,yInter,isVerify = Points
     plt.title('Convexity and concavity')
     plt.plot(x, y, color="black", label="f(x)")
