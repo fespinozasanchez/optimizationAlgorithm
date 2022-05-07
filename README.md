@@ -1,4 +1,4 @@
-# Presentamos distintos tipos de aloritmos para nuestro ramo Algoritmo de optimización
+# Presentamos distintos tipos de algoritmos para nuestro ramo Algoritmo de optimización
 
 
 ## Objetivos
