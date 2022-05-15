@@ -64,7 +64,7 @@ def graph(Points):
     """
     It takes a list of points and plots them on a graph
     
-    :param Points: a tuple of the following:
+    :param Points: a array of the following:
     """
     x,y,xExp,yExp,xInter,yInter,isVerify = Points
     plt.title('Convexity and concavity')
@@ -74,6 +74,8 @@ def graph(Points):
     plt.plot(xInter, yInter, color='red', label='Interpolation')
     plt.legend()
     plt.grid()
+    plt.xlabel('x')
+    plt.ylabel('f(x)')
     plt.show()
 
 
@@ -86,8 +88,8 @@ def main():
     x_b = float(input("x_b: "))
     lamb = float(input("lambda[0,1]: "))
     function = str(input("function: "))
-    points = points(f, function, x_a, x_b, lamb)
-    graph(points)
+    point = points(f, function, x_a, x_b, lamb)
+    graph(point)
 
 
 if __name__ == '__main__':
