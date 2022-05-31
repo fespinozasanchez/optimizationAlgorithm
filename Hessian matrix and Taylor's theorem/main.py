@@ -75,8 +75,12 @@ def graph(x, taylor):
     :param x: the x-values to evaluate the function at
     :param taylor: the taylor series approximation of f(x)
     """
-    plt.plot(x,fx_eval(x))
-    plt.plot(x,taylor,color="red")
+    plt.plot(x,fx_eval(x),color="blue",label='Exact Value')
+    plt.plot(x,taylor,color="red",label="Taylor")
+    plt.legend()
+    plt.grid()
+    plt.xlabel('x')
+    plt.ylabel('Value')
     plt.show()
 
 
