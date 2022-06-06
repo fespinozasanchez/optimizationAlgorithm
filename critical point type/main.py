@@ -18,9 +18,10 @@ def point_type(x, y, solution):
 
 
 def main():
-    x,y = Symbol('x y')
-
-    function = functions("x**2 + 4*y**2 - 2*(x**2)*y + 4")
+    x = Symbol('x')
+    y = Symbol('y')
+    f = input('Enter a function: ')
+    function = functions(f)
     derivate_x = function.diff(x)
     derivate_y = function.diff(y)
     solution = solve((derivate_x, derivate_y), [x, y])
