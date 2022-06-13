@@ -1,7 +1,7 @@
 import sympy
 from sympy import*
 
-
+import numpy as np
 
 coord_x = float(input("(x): "))
 coord_y = float(input("(y): "))
@@ -20,3 +20,6 @@ def get_Point(x,y):
 
 print(get_Point(coord_x,coord_y))
 
+
+def get_Epsilon():
+    return np.finfo(float).eps
