@@ -20,7 +20,7 @@ def functions(f: str):
     return f if isinstance(f, Function) else sympify(f)
 
 
-
+############################################################################## FUERZA BRUTA ####################################################################################
 def bruteForce(rango1,rango2, deltaXV, f, list=[]):
     """
     This function applies brute force to find all suboptimal solutions given a restriction and save the points evaluated and its value Z.
