@@ -48,11 +48,10 @@ def get_Derivative(f: sympy.Expr, x: sympy.Symbol, n: int) -> sympy.Expr:
     """
     return sympy.diff(f, x, n)
 
-def get_Gradient(f: sympy.Expr, x: sympy.Symbol, n: int, *args) -> sympy.Expr:
-    if len(args)!=0:
-        derivative = eval(str(get_Derivative(f, x, n)))
-        return Matrix([[derivative]])
-    return Matrix([[get_Derivative(f, x, n)]])
+
+
+
+
 
 def get_Epsilon()->float:
     """

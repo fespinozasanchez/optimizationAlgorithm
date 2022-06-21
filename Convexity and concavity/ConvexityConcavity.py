@@ -92,5 +92,11 @@ def main():
     graph(point)
 
 
+
+ # Booth function
+ # (x + 2*y -7 )**2 + (2*x+y-5)**2   [-10, 10]
+ # Beale function
+ # (1.5 - x + x*y)**2 + (2.25 - x + x*(y**2))**2 + (2.625 - x + x*(y**3))**2    [-4.5, 4.5]
+
 if __name__ == '__main__':
     main()
