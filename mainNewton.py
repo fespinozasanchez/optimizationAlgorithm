@@ -132,12 +132,13 @@ def grafB(xl,yl, z):
 # (1.5 - x + x*y)**2 + (2.25 - x + x*(y**2))**2 + (2.625 - x + x*(y**3))**2    [-4.5, 4.5]
 x, y = get_Symbols()
 e=get_Epsilon()
-funcion = functions(str(input("Ingrese su función: ")))
+funcion = functions(str(input("Ingrese su funcion: ")))
 x_n = float(input("Ingrese x: "))
 y_n = float(input("Ingrese y: "))
 xa,ya,za=Newton_method2(funcion,x_n,y_n,e)
-grafB(xa,ya,za)
 print(xa,ya,za)
+grafB(xa,ya,za)
+
 
 
 
