@@ -2,8 +2,8 @@ library(tidyverse)
 library(readr)
 library(ggplot2)
 library(patchwork)
-#install.packages('patchwork')
-
+require(pacman)
+pacman::p_load(raster, hablar, rgdal, rgeos, sna, foreign, stringr, sf, tidyverse, gtools)
 
 
 # Parliaments of 20 Members ----------------------------------------------
@@ -24,12 +24,23 @@ plotMatriz50 = qplot(data=Matriz50, x=x, y= y)+
   ggtitle("50 Members")+
   facet_grid()
 
+plotMatriz20 | plotMatriz50
 
 
+# -------------------------------------------------------------------------
 
-# suma <- function(x, y) {
-#   return(c(x,y))
-# }
-# 
-# 
-# suma(1,2)
+
+# Distance between points -------------------------------------------------
+
+coordinates(Matriz20) <- ~ x + y
+coordinates(Matriz50) <- ~ x + y
+dists20 <- pointDistance(Matriz20, lonlat=FALSE)
+dists50 <- pointDistance(Matriz50, lonlat=FALSE)
+
+
+dists20
+dists50
+
+# -------------------------------------------------------------------------
+
+
