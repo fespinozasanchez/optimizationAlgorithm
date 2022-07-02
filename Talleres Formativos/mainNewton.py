@@ -22,6 +22,7 @@ def get_Symbols()->list:
     """
     return Symbol('x'),Symbol('y')
 
+
 def get_Derivative2(f: sympy.Expr, n: int) -> sympy.Expr:
     """
     It takes a function, a variable, and a number, and returns the nth derivative of the function with
