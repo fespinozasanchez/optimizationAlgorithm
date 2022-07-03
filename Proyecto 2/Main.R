@@ -1,9 +1,7 @@
-library(tidyverse)
 library(readr)
-library(ggplot2)
 library(patchwork)
 require(pacman)
-pacman::p_load(raster, hablar, rgdal, rgeos, sna, foreign, stringr, sf, tidyverse, gtools)
+pacman::p_load(raster, ggplot2, sf, tidyverse)
 
 
 # Parliaments of 20 Members ----------------------------------------------
@@ -30,17 +28,31 @@ plotMatriz20 | plotMatriz50
 # -------------------------------------------------------------------------
 
 
-# Distance between points -------------------------------------------------
 
-coordinates(Matriz20) <- ~ x + y
-coordinates(Matriz50) <- ~ x + y
-dists20 <- pointDistance(Matriz20, lonlat=FALSE)
-dists50 <- pointDistance(Matriz50, lonlat=FALSE)
+# Function That Generates Distance Matrix of Points ------------------------------------------
+
+matriz_Distance <- function(MatrizN){
+  coordinates(MatrizN) <- ~ x + y
+  return (pointDistance(MatrizN, lonlat=FALSE))
+}
+
+dists20 <- matriz_Distance(Matriz20)
+dists50 <- matriz_Distance(Matriz50)
 
 
 dists20
 dists50
 
-# -------------------------------------------------------------------------
+
+# Function to generate n vectors in a matrix ------------------------------------------------------
+matriz_Generate <- function(ncols, nrows, prob,sizes,ranges){
+  return (matrix(rbinom( sizes, ranges, prob), nrow=nrows, ncol = ncols[1]))
+}
+
+ncols = sample(3:5,replace=T)
+nrows = 20
+prob = .4
+matriz =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
 
 
+matriz[,1]
