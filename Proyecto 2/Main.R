@@ -55,4 +55,16 @@ prob = .4
 matriz =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
 
 
-matriz[,1]
+# #Distances Sum ----------------------------------------------------------
+print(matriz)
+cont=0
+for (i in 1:dim(matriz)[2]){
+  acumulate=0
+  for(j in 1:dim(matriz)[1])
+    if(matriz[,i][j]==1){
+    acumulate=acumulate+dists20[,i][j]
+    print(matriz[,i][j])
+    }
+  print(acumulate)
+}
+
