@@ -54,21 +54,39 @@ nrows = 20
 prob = .4
 matriz_gen20 =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
 
-
+matriz_gen20
 # Distances Sum ----------------------------------------------------------
 generic_Acummulate <- function(matriz,dists){
   data = c()
-  for (i in 1:dim(matriz)[2]){
+  for (i in 1:ncol(matriz)){
     acumulate = 0
-    for(j in 1:dim(matriz)[1])
-      if(matriz[,i][j] == 1){
-        acumulate = acumulate + dists[,i][j]
+    pos <- which(matriz[,i]==1)
+      for(j in 1:length(pos)){
+        for(k in 1:length(pos)-1){
+         acumulate=acumulate+dists20[pos[j],pos[k+1]]
+        }
       }
+    
     data <-c(data,acumulate)
+   
   }
-  return (sum(data/sum(data)))
+
+  return (data/sum(data))
 }
 
 data = generic_Acummulate(matriz_gen20, dists20)
 data
+sum(data)
+
+
+
+
+
+
+
+
+
+
+
+
 
