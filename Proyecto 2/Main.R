@@ -49,12 +49,23 @@ matriz_Generate <- function(ncols, nrows, prob,sizes,ranges){
   return (matrix(rbinom( sizes, ranges, prob), nrow=nrows, ncol = ncols[1]))
 }
 
-ncols = sample(3:5,replace=T)
+ncols = sample(60:80,replace=T)
 nrows = 20
 prob = .4
 matriz_gen20 =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
 
 matriz_gen20
+
+
+# Condition ---------------------------------------------------------------
+
+#while(sum(dataSorted == dataSorted[best])<length(matriz_gen20)/2+1){
+ # print("hola")
+#}
+
+
+
+
 # Distances Sum ----------------------------------------------------------
 generic_Acummulate <- function(matriz,dists){
   data = c()
@@ -75,18 +86,57 @@ generic_Acummulate <- function(matriz,dists){
 }
 
 data = generic_Acummulate(matriz_gen20, dists20)
-data
 sum(data)
+#FINAL DE ALGORITMO PARA MOSTRAR PUNTOS EN ORDEN
+dataSorted=sort(data,decreasing = T)
+best=which.max(dataSorted)
+best
+sum(dataSorted == dataSorted[best])
+
+# Best Prob ---------------------------------------------------------------
+
+best_vector <- function(matriz, best){
+  return (c(matriz_gen20[,best]))
+}
 
 
+b_vector = best_vector(matriz_gen20,best) 
+b_vector
 
 
+# Selection ---------------------------------------------------------------
+bestC=which.max(data)
+oldPop<- matriz_gen20[, -bestC]
+newPop=oldPop
+
+for(i in 1:ncol(oldPop)){
+  random_selection= sample(1:ncol(oldPop),3,replace=F)
+  max=0
+  for (i in random_selection){
+    if(data[i]>max){
+      max=i
+      }
+  }
+  newPop[,i]=oldPop[,max]
+  
+}
 
 
+#Crossover ----------------------------------------------------------------
+oldPop=newPop
+for (i in 1:ncol(oldPop)) {
+  chromosome = c()
+  for (j in ncol(oldPop):1){
+    genP1 = oldPop[,i][1:((length(oldPop[,i])/2)+1)]
+    genP2 = oldPop[,j][((length(oldPop[,i])/2)+2):length(oldPop[,j])]
+    chromosome = c(genP1,genP2)
+    
+  }
+  newPop[,i] =chromosome
+}
 
+newPop
 
-
-
-
+# Mutation ----------------------------------------------------------------
 
 
