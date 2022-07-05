@@ -123,12 +123,11 @@ for(i in 1:ncol(oldPop)){
 
 
 #Crossover ----------------------------------------------------------------
-oldPop=newPop
-for (i in 1:ncol(oldPop)) {
+for (i in 1:ncol(newPop)) {
   chromosome = c()
-  for (j in ncol(oldPop):1){
-    genP1 = oldPop[,i][1:((length(oldPop[,i])/2)+1)]
-    genP2 = oldPop[,j][((length(oldPop[,i])/2)+2):length(oldPop[,j])]
+  for (j in ncol(newPop):1){
+    genP1 = newPop[,i][1:((length(newPop[,i])/2)+1)]
+    genP2 = newPop[,j][((length(newPop[,i])/2)+2):length(newPop[,j])]
     chromosome = c(genP1,genP2)
     
   }
