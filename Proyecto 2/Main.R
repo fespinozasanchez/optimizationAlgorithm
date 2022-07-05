@@ -40,22 +40,15 @@ dists20 <- matriz_Distance(Matriz20)
 dists50 <- matriz_Distance(Matriz50)
 
 
-dists20
-dists50
-
-
 # Function to generate n vectors in a matrix ------------------------------------------------------
 matriz_Generate <- function(ncols, nrows, prob,sizes,ranges){
   return (matrix(rbinom( sizes, ranges, prob), nrow=nrows, ncol = ncols[1]))
 }
 
-ncols = sample(10:30,replace=T)
+ncols = sample(60:80,replace=T)
 nrows = 20
 prob = .4
 matriz_gen20 =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
-
-matriz_gen20
-
 
 # Condition ---------------------------------------------------------------
 
@@ -86,29 +79,12 @@ generic_Acummulate <- function(matriz,dists){
 }
 
 data = generic_Acummulate(matriz_gen20, dists20)
-sum(data)
-#FINAL DE ALGORITMO PARA MOSTRAR PUNTOS EN ORDEN
-dataSorted=sort(data,decreasing = T)
-best=which.max(dataSorted)
-best
-sum(dataSorted == dataSorted[best])
-
-# Best Prob ---------------------------------------------------------------
-
-best_vector <- function(matriz, best){
-  return (c(matriz_gen20[,best]))
-}
-
-
-b_vector = best_vector(matriz_gen20,best) 
-b_vector
 
 
 # Selection ---------------------------------------------------------------
 bestC=which.max(data)
 oldPop = matriz_gen20[, -bestC]
 newPop=oldPop
-newPop
 for(i in 1:ncol(oldPop)){
   random_selection= sample(1:ncol(oldPop),3,replace=F)
   max=0
@@ -121,12 +97,10 @@ for(i in 1:ncol(oldPop)){
 
   
 }
-newPop
 
 
 #Crossover ----------------------------------------------------------------
 cross_Pop = matrix(nrow = nrow(newPop),ncol = ncol(newPop))
-cross_Pop
 i=1
 while(i < ncol(newPop)){
   if (ncol(newPop) %% 2 == 0){
@@ -154,8 +128,15 @@ while(i < ncol(newPop)){
 
   }
 }
-cross_Pop
+
 # Mutation ----------------------------------------------------------------
+for(i in  1:ncol(cross_Pop)){
+  random_gen=sample(1:20,1)
+   if(runif(1)>0.60){
+     cross_Pop[,i][random_gen] <- ifelse(cross_Pop[,i][random_gen]==1, 0, 1)
+   }
+}
+cross_Pop=cbind(cross_Pop,matriz_gen20[,bestC])
 
 # Chart Chromosome --------------------------------------------------------
 
@@ -181,3 +162,12 @@ chromosome_Chart(length(data), data)
 
 
   
+
+
+
+#FINAL DE ALGORITMO PARA MOSTRAR PUNTOS EN ORDEN
+dataSorted=sort(data,decreasing = T)
+best=which.max(dataSorted)
+best
+sum(dataSorted == dataSorted[best])
+
