@@ -60,7 +60,7 @@ matriz_gen20 =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
 
 
 # Distances Sum ----------------------------------------------------------
-generic_Acummulate <- function(matriz,dists){
+generic_Acummulate <- function(matriz, dists){
   data = c()
   for (i in 1:ncol(matriz)){
     acumulate = 0
@@ -78,65 +78,83 @@ generic_Acummulate <- function(matriz,dists){
   return (data/sum(data))
 }
 
-data = generic_Acummulate(matriz_gen20, dists20)
+data_20 = generic_Acummulate(matriz_gen20, dists20)
 
 
 # Selection ---------------------------------------------------------------
-bestC=which.max(data)
-oldPop = matriz_gen20[, -bestC]
-newPop=oldPop
-for(i in 1:ncol(oldPop)){
-  random_selection= sample(1:ncol(oldPop),3,replace=F)
-  max=0
-  for (i in random_selection){
-    if(data[i] > max){
-      max=i
+Selection <- function(data, matriz){
+  bestC=which.max(data)
+  oldPop = matriz[, -bestC]
+  newPop=oldPop
+  for(i in 1:ncol(oldPop)){
+    random_selection= sample(1:ncol(oldPop),3,replace=F)
+    max=0
+    for (i in random_selection){
+      if(data[i] > max){
+        max=i
+      }
+      newPop[,i]=oldPop[,max]
     }
-    newPop[,i]=oldPop[,max]
   }
-
+  return(newPop)
   
 }
 
+newPop_20 = Selection(data_20, matriz_gen20)
+
 
 #Crossover ----------------------------------------------------------------
-cross_Pop = matrix(nrow = nrow(newPop),ncol = ncol(newPop))
-i=1
-while(i < ncol(newPop)){
-  if (ncol(newPop) %% 2 == 0){
-    genP1 <- newPop[,i][1:((nrow(newPop)/2)+1)]
-    genP2 <- newPop[,i+1][((nrow(newPop)/2)+2):nrow(newPop)]
-    cross_Pop[,i] = c(genP1,genP2)
-    cross_Pop[,i+1] = c(genP2,genP1)
-    i = i + 1
-  }else{
-    if(i<ncol(newPop)){
+Crossover <- function(newPop){
+  cross_Pop = matrix(nrow = nrow(newPop),ncol = ncol(newPop))
+  i=1
+  while(i < ncol(newPop)){
+    if (ncol(newPop) %% 2 == 0){
       genP1 <- newPop[,i][1:((nrow(newPop)/2)+1)]
       genP2 <- newPop[,i+1][((nrow(newPop)/2)+2):nrow(newPop)]
       cross_Pop[,i] = c(genP1,genP2)
       cross_Pop[,i+1] = c(genP2,genP1)
       i = i + 1
     }else{
-      if(i==ncol(newPop)){
+      if(i<ncol(newPop)){
         genP1 <- newPop[,i][1:((nrow(newPop)/2)+1)]
-        genP2 <- newPop[,i][((nrow(newPop)/2)+2):nrow(newPop)]
-        chromosomeh2 = c(genP2,genP1)
-        cross_Pop[,i] = chromosomeh2
-        break
+        genP2 <- newPop[,i+1][((nrow(newPop)/2)+2):nrow(newPop)]
+        cross_Pop[,i] = c(genP1,genP2)
+        cross_Pop[,i+1] = c(genP2,genP1)
+        i = i + 1
+      }else{
+        if(i==ncol(newPop)){
+          genP1 <- newPop[,i][1:((nrow(newPop)/2)+1)]
+          genP2 <- newPop[,i][((nrow(newPop)/2)+2):nrow(newPop)]
+          chromosomeh2 = c(genP2,genP1)
+          cross_Pop[,i] = chromosomeh2
+          break
+        }
       }
+      
     }
-
   }
+  return (cross_Pop)
+  
 }
+cross_Pop_20 = Crossover(newPop_20)
 
 # Mutation ----------------------------------------------------------------
-for(i in  1:ncol(cross_Pop)){
-  random_gen=sample(1:20,1)
-   if(runif(1)>0.60){
-     cross_Pop[,i][random_gen] <- ifelse(cross_Pop[,i][random_gen]==1, 0, 1)
-   }
+Mutation <- function(matriz, vector_best){
+  for(i in  1:ncol(matriz)){
+    random_gen=sample(1:20,1)
+    if(runif(1)>0.60){
+      matriz[,i][random_gen] <- ifelse(matriz[,i][random_gen]==1, 0, 1)
+    }
+  }
+  matriz = cbind(matriz,vector_best[,bestC])
+  return (matriz)
 }
-cross_Pop=cbind(cross_Pop,matriz_gen20[,bestC])
+
+
+
+
+Mutation_20 = Mutation(cross_Pop_20, matriz_gen20)
+
 
 # Chart Chromosome --------------------------------------------------------
 
