@@ -2,7 +2,7 @@ library(readr)
 library(patchwork)
 require(pacman)
 pacman::p_load(raster, ggplot2, sf, tidyverse)
-
+options(max.print=999999)
 
 # Parliaments of 20 Members ----------------------------------------------
 Matriz20 <- read_csv("Matriz20.csv", col_types = cols(...1 = col_skip()))
@@ -49,7 +49,7 @@ matriz_Generate <- function(ncols, nrows, prob,sizes,ranges){
   return (matrix(rbinom( sizes, ranges, prob), nrow=nrows, ncol = ncols[1]))
 }
 
-ncols = sample(60:80,replace=T)
+ncols = sample(10:30,replace=T)
 nrows = 20
 prob = .4
 matriz_gen20 =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
@@ -106,38 +106,78 @@ b_vector
 
 # Selection ---------------------------------------------------------------
 bestC=which.max(data)
-oldPop<- matriz_gen20[, -bestC]
+oldPop = matriz_gen20[, -bestC]
 newPop=oldPop
-
+newPop
 for(i in 1:ncol(oldPop)){
   random_selection= sample(1:ncol(oldPop),3,replace=F)
   max=0
   for (i in random_selection){
-    if(data[i]>max){
+    if(data[i] > max){
       max=i
-      }
+    }
+    newPop[,i]=oldPop[,max]
   }
-  newPop[,i]=oldPop[,max]
+
   
 }
+newPop
 
 
 #Crossover ----------------------------------------------------------------
-for (i in 1:ncol(newPop)) {
-  chromosome = c()
-  for (j in ncol(newPop):1){
-    genP1 = newPop[,i][1:((length(newPop[,i])/2)+1)]
-    genP2 = newPop[,j][((length(newPop[,i])/2)+2):length(newPop[,j])]
-    chromosome = c(genP1,genP2)
-    
+cross_Pop = matrix(nrow = nrow(newPop),ncol = ncol(newPop))
+cross_Pop
+i=1
+while(i < ncol(newPop)){
+  if (ncol(newPop) %% 2 == 0){
+    genP1 <- newPop[,i][1:((nrow(newPop)/2)+1)]
+    genP2 <- newPop[,i+1][((nrow(newPop)/2)+2):nrow(newPop)]
+    cross_Pop[,i] = c(genP1,genP2)
+    cross_Pop[,i+1] = c(genP2,genP1)
+    i = i + 1
+  }else{
+    if(i<ncol(newPop)){
+      genP1 <- newPop[,i][1:((nrow(newPop)/2)+1)]
+      genP2 <- newPop[,i+1][((nrow(newPop)/2)+2):nrow(newPop)]
+      cross_Pop[,i] = c(genP1,genP2)
+      cross_Pop[,i+1] = c(genP2,genP1)
+      i = i + 1
+    }else{
+      if(i==ncol(newPop)){
+        genP1 <- newPop[,i][1:((nrow(newPop)/2)+1)]
+        genP2 <- newPop[,i][((nrow(newPop)/2)+2):nrow(newPop)]
+        chromosomeh2 = c(genP2,genP1)
+        cross_Pop[,i] = chromosomeh2
+        break
+      }
+    }
+
   }
-  newPop[,i] =chromosome
 }
-
-newPop
-
+cross_Pop
 # Mutation ----------------------------------------------------------------
 
+# Chart Chromosome --------------------------------------------------------
+
+
+chromosome_Chart <- function(nsize, porc){
+  best = porc[which.max(porc)]
+  label = c()
+  for (j in 1:nsize) {
+    n_chromosome = paste("C",j)
+    label <-c(label,n_chromosome)
+    
+  }
+  print(label)
+  print(porc)
+  label <- paste(label,": ")
+  label <- paste(label, porc)
+  label <- paste(label, "%", sep = "")
+  pie(porc, main = "Percentage of each chromosome",sub = paste("best:",best) , col = rainbow(10))
+  legend("topleft", legend =label,fill = rainbow(10))
+}
+
+chromosome_Chart(length(data), data)
 
 
   
