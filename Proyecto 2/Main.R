@@ -185,6 +185,7 @@ for (i in 1:ncol(matriz_gen20)) {
   }
   
 }
+new_Best_matriz
 
 # Graph -------------------------------------------------------------------
 
@@ -193,11 +194,16 @@ Graph <- function(bestMatriz,posMatriz,percentage,Matriz20){
    selected<-which.max(percentage)
   groups<-c(bestMatriz[,selected]+nG)
   dfM20<-data.frame(Matriz20, groups)
+  print(dfM20)
   plot(dfM20$x,
        dfM20$y,
        pch=16,
        col=  dfM20$groups)
+  dfArea = dfM20[dfM20$groups==2,]
+  dfArea=dfArea[order(dfArea$x),]
+
   
+  polygon(dfArea$x, dfArea$y, col = rgb(0, 0, 255, max = 255, alpha = 125, names = "blue50"))
 
   
 }
