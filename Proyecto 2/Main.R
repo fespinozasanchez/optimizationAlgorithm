@@ -186,7 +186,8 @@ for (i in 1:ncol(matriz_gen20)) {
 }
 new_Best_matriz
 pos
-percentage
+order(percentage)
+new_Best_matriz[,57]
 # # Chart Chromosome --------------------------------------------------------
 # 
 # 
