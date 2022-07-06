@@ -1,6 +1,7 @@
 library(readr)
 library(patchwork)
 require(pacman)
+
 pacman::p_load(raster, ggplot2, sf, tidyverse)
 options(max.print=999999)
 
@@ -184,10 +185,26 @@ for (i in 1:ncol(matriz_gen20)) {
   }
   
 }
-new_Best_matriz
-pos
-order(percentage)
-new_Best_matriz[,57]
+
+# Graph -------------------------------------------------------------------
+
+Graph <- function(bestMatriz,posMatriz,percentage,Matriz20){
+  nG<-sample(1:1 ,20 , replace = T)
+   selected<-which.max(percentage)
+  groups<-c(bestMatriz[,selected]+nG)
+  dfM20<-data.frame(Matriz20, groups)
+  plot(dfM20$x,
+       dfM20$y,
+       pch=16,
+       col=  dfM20$groups)
+  
+
+  
+}
+
+Graph(new_Best_matriz,pos,percentage,Matriz20)
+
+
 # # Chart Chromosome --------------------------------------------------------
 # 
 # 
@@ -212,20 +229,5 @@ new_Best_matriz[,57]
 
 
 
-
-
-
-
-
-
-
-
-
-
-#FINAL DE ALGORITMO PARA MOSTRAR PUNTOS EN ORDEN
-# dataSorted=sort(data,decreasing = T)
-# best=which.max(dataSorted)
-# best
-# sum(dataSorted == dataSorted[best])
 
 
