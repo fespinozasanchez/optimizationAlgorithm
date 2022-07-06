@@ -174,14 +174,19 @@ data_20
 matriz_gen20
 
 new_Best_matriz = matrix(nrow = 20)
-for (i in 1:nrow(matriz_gen20)) {
+pos=c()
+percentage=c()
+for (i in 1:ncol(matriz_gen20)) {
   if(sum(matriz_gen20[,i]==1)==11){
     new_Best_matriz <- cbind(new_Best_matriz,matriz_gen20[,i])
+    pos=cbind(pos,i)
+    percentage=cbind(percentage,data_20[i])
   }
   
 }
 new_Best_matriz
-
+pos
+percentage
 # # Chart Chromosome --------------------------------------------------------
 # 
 # 
