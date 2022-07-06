@@ -45,16 +45,10 @@ matriz_Generate <- function(ncols, nrows, prob,sizes,ranges){
   return (matrix(rbinom( sizes, ranges, prob), nrow=nrows, ncol = ncols[1]))
 }
 
-ncols = sample(60:80,replace=T)
+ncols = sample(40:60,replace=T)
 nrows = 20
 prob = .4
 matriz_gen20 =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
-
-# Condition ---------------------------------------------------------------
-
-#while(sum(dataSorted == dataSorted[best])<length(matriz_gen20)/2+1){
- # print("hola")
-#}
 
 
 
@@ -70,16 +64,13 @@ generic_Acummulate <- function(matriz, dists){
          acumulate=acumulate+dists20[pos[j],pos[k+1]]
         }
       }
-    
     data <-c(data,acumulate)
+
    
   }
 
   return (data/sum(data))
 }
-
-data_20 = generic_Acummulate(matriz_gen20, dists20)
-
 
 # Selection ---------------------------------------------------------------
 Selection <- function(data, matriz){
@@ -88,7 +79,7 @@ Selection <- function(data, matriz){
   newPop=oldPop
   for(i in 1:ncol(oldPop)){
     random_selection= sample(1:ncol(oldPop),3,replace=F)
-    max=0
+    max=1
     for (i in random_selection){
       if(data[i] > max){
         max=i
@@ -100,7 +91,7 @@ Selection <- function(data, matriz){
   
 }
 
-newPop_20 = Selection(data_20, matriz_gen20)
+
 
 
 #Crossover ----------------------------------------------------------------
@@ -136,14 +127,17 @@ Crossover <- function(newPop){
   return (cross_Pop)
   
 }
-cross_Pop_20 = Crossover(newPop_20)
+
 
 # Mutation ----------------------------------------------------------------
-Mutation <- function(matriz, vector_best){
+Mutation <- function(matriz, vector_best,bestC){
   for(i in  1:ncol(matriz)){
     random_gen=sample(1:20,1)
-    if(runif(1)>0.60){
+    if(runif(1)>0.51){
       matriz[,i][random_gen] <- ifelse(matriz[,i][random_gen]==1, 0, 1)
+    }
+    if(runif(1)==1){
+      matriz[,i]<- ifelse(matriz[,i][random_gen]==1, 0, 1)
     }
   }
   matriz = cbind(matriz,vector_best[,bestC])
@@ -153,39 +147,79 @@ Mutation <- function(matriz, vector_best){
 
 
 
-Mutation_20 = Mutation(cross_Pop_20, matriz_gen20)
 
+# Condition ---------------------------------------------------------------
 
-# Chart Chromosome --------------------------------------------------------
-
-
-chromosome_Chart <- function(nsize, porc){
-  best = porc[which.max(porc)]
-  label = c()
-  for (j in 1:nsize) {
-    n_chromosome = paste("C",j)
-    label <-c(label,n_chromosome)
-    
-  }
-  print(label)
-  print(porc)
-  label <- paste(label,": ")
-  label <- paste(label, porc)
-  label <- paste(label, "%", sep = "")
-  pie(porc, main = "Percentage of each chromosome",sub = paste("best:",best) , col = rainbow(10))
-  legend("topleft", legend =label,fill = rainbow(10))
+contador=0
+while(contador<10000){
+  print(contador)
+  # Distances Sum -----------------------------------------------------------
+  data_20 = generic_Acummulate(matriz_gen20, dists20)
+  # Tournament Selection ---------------------------------------------------------------
+  newPop_20 = Selection(data_20, matriz_gen20)
+  # Crossover ---------------------------------------------------------------
+  cross_Pop_20 = Crossover(newPop_20)
+  # Mutation ----------------------------------------------------------------
+  bestC=which.max(data_20)
+  Mutation_20 = Mutation(cross_Pop_20, matriz_gen20,bestC)
+  matriz_gen20=Mutation_20
+  con <- table(data_20)
+  #condition=con[names(con)==data_20[bestC]]
+  contador=contador+1
 }
 
-chromosome_Chart(length(data), data)
+sort(data_20,decreasing = T)
+order(data_20)
+data_20
+matriz_gen20
 
-
+new_Best_matriz = matrix(nrow = 20)
+for (i in 1:nrow(matriz_gen20)) {
+  if(sum(matriz_gen20[,i]==1)==11){
+    new_Best_matriz <- cbind(new_Best_matriz,matriz_gen20[,i])
+  }
   
+}
+new_Best_matriz
+
+# # Chart Chromosome --------------------------------------------------------
+# 
+# 
+# chromosome_Chart <- function(nsize, porc){
+#   best = porc[which.max(porc)]
+#   label = c()
+#   for (j in 1:nsize) {
+#     n_chromosome = paste("C",j)
+#     label <-c(label,n_chromosome)
+#     
+#   }
+#   print(label)
+#   print(porc)
+#   label <- paste(label,": ")
+#   label <- paste(label, porc)
+#   label <- paste(label, "%", sep = "")
+#   pie(porc, main = "Percentage of each chromosome",sub = paste("best:",best) , col = rainbow(10))
+#   #legend("topleft", legend =label,fill = rainbow(10))
+# }
+# 
+# chromosome_Chart(length(data_20), data_20)
+
+
+
+
+
+
+
+
+
+
 
 
 
 #FINAL DE ALGORITMO PARA MOSTRAR PUNTOS EN ORDEN
-dataSorted=sort(data,decreasing = T)
-best=which.max(dataSorted)
-best
-sum(dataSorted == dataSorted[best])
+# dataSorted=sort(data,decreasing = T)
+# best=which.max(dataSorted)
+# best
+# sum(dataSorted == dataSorted[best])
+
 
