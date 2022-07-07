@@ -5,19 +5,20 @@ require(pacman)
 pacman::p_load(raster, ggplot2, sf, tidyverse)
 options(max.print=999999)
 
-# Parliaments of 20 Members ----------------------------------------------
-Matriz20 <- read_csv("Matriz20.csv", col_types = cols(...1 = col_skip()))
-names(Matriz20) = c("x","y")
+
+# Parliaments of 50 Members ----------------------------------------------
+Matriz50 <- read_csv("Matriz50.csv", col_types = cols(...1 = col_skip()))
+names(Matriz50) = c("x","y")
 
 
-# PLOT 20  ----------------------------------------------------
-plotMatriz20 = qplot(data=Matriz20, x=x, y= y)+ 
-  geom_point(size=3,colour='blue')+
-  ggtitle("20 Members")+ 
+#  50 MEMBERS ----------------------------------------------------
+
+plotMatriz50 = qplot(data=Matriz50, x=x, y= y)+ 
+  geom_point(size=3,colour='red')+
+  ggtitle("50 Members")+
   facet_grid()
 
-
-plotMatriz20 
+ plotMatriz50
 
 
 # -------------------------------------------------------------------------
@@ -31,8 +32,7 @@ matriz_Distance <- function(MatrizN){
   return (pointDistance(MatrizN, lonlat=FALSE))
 }
 
-dists20 <- matriz_Distance(Matriz20)
-
+dists50 <- matriz_Distance(Matriz50)
 
 
 # Function to generate n vectors in a matrix ------------------------------------------------------
@@ -40,11 +40,10 @@ matriz_Generate <- function(ncols, nrows, prob,sizes,ranges){
   return (matrix(rbinom( sizes, ranges, prob), nrow=nrows, ncol = ncols[1]))
 }
 
-ncols = sample(60:80,replace=T)
-nrows = 20
+ncols = sample(20:40,replace=T)
+nrows = 50
 prob = .4
-matriz_gen20 =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
-
+matriz_gen50 =  matriz_Generate(ncols,nrows,prob,(ncols[1]*nrows),1)
 
 
 
@@ -54,16 +53,16 @@ generic_Acummulate <- function(matriz, dists){
   for (i in 1:ncol(matriz)){
     acumulate = 0
     pos <- which(matriz[,i]==1)
-      for(j in 1:length(pos)){
-        for(k in 1:length(pos)-1){
-         acumulate=acumulate+dists20[pos[j],pos[k+1]]
-        }
+    for(j in 1:length(pos)){
+      for(k in 1:length(pos)-1){
+        acumulate=acumulate+dists50[pos[j],pos[k+1]]
       }
+    }
     data <-c(data,acumulate)
-
-   
+    
+    
   }
-
+  
   return (data/sum(data))
 }
 
@@ -127,7 +126,7 @@ Crossover <- function(newPop){
 # Mutation ----------------------------------------------------------------
 Mutation <- function(matriz, vector_best,bestC){
   for(i in  1:ncol(matriz)){
-    random_gen=sample(1:20,1)
+    random_gen=sample(1:50,1)
     if(runif(1)>0.51){
       matriz[,i][random_gen] <- ifelse(matriz[,i][random_gen]==1, 0, 1)
     }
@@ -144,16 +143,16 @@ Mutation <- function(matriz, vector_best,bestC){
 
 Graph <- function(bestMatriz,posMatriz,percentage,Matriz){
   bestMatriz<-bestMatriz[,-1]
-  nG<-sample(1:1 ,20 , replace = T)
+  nG<-sample(1:1 ,50 , replace = T)
   selected<-which.max(percentage)
   groups<-c(bestMatriz[,selected]+nG)
-  dfM20<-data.frame(Matriz, groups)
-  print(dfM20)
-  plot(dfM20$x,
-       dfM20$y,
+  dfM50<-data.frame(Matriz, groups)
+  print(dfM50)
+  plot(dfM50$x,
+       dfM50$y,
        pch=16,
-       col=  dfM20$groups)
-  dfArea = dfM20[dfM20$groups==2,]
+       col=  dfM50$groups)
+  dfArea = dfM50[dfM50$groups==2,]
   dfArea=dfArea[order(dfArea$x),]
   
   
@@ -162,50 +161,48 @@ Graph <- function(bestMatriz,posMatriz,percentage,Matriz){
   
 }
 
-# 20 Section --------------------------------------------------------------
 
 
 
-# Condition ---------------------------------------------------------------
+# 50 Section --------------------------------------------------------------
+
+
 
 contador=0
 while(contador<10000){
   print(contador)
   # Distances Sum -----------------------------------------------------------
-  data_20 = generic_Acummulate(matriz_gen20, dists20)
+  data_50 = generic_Acummulate(matriz_gen50, dists50)
   # Tournament Selection ---------------------------------------------------------------
-  newPop_20 = Selection(data_20, matriz_gen20)
+  newPop_50 = Selection(data_50, matriz_gen50)
   # Crossover ---------------------------------------------------------------
-  cross_Pop_20 = Crossover(newPop_20)
+  cross_Pop_50 = Crossover(newPop_50)
   # Mutation ----------------------------------------------------------------
-  bestC=which.max(data_20)
-  Mutation_20 = Mutation(cross_Pop_20, matriz_gen20,bestC)
-  matriz_gen20=Mutation_20
-  con <- table(data_20)
+  bestC=which.max(data_50)
+  Mutation_50 = Mutation(cross_Pop_50, matriz_gen50,bestC)
+  matriz_gen50=Mutation_50
+  con <- table(data_50)
   #condition=con[names(con)==data_20[bestC]]
   contador=contador+1
 }
 
-sort(data_20,decreasing = T)
-order(data_20)
-data_20
-matriz_gen20
+sort(data_50,decreasing = T)
+order(data_50)
+data_50
+matriz_gen50
 
-new_Best_matriz = matrix(nrow = 20)
+new_Best_matriz = matrix(nrow = 50)
 pos=c()
 percentage=c()
-for (i in 1:ncol(matriz_gen20)) {
-  if(sum(matriz_gen20[,i]==1)==11){
-    new_Best_matriz <- cbind(new_Best_matriz,matriz_gen20[,i])
+for (i in 1:ncol(matriz_gen50)) {
+  if(sum(matriz_gen50[,i]==1)==26){
+    new_Best_matriz <- cbind(new_Best_matriz,matriz_gen50[,i])
     pos=cbind(pos,i)
-    percentage=cbind(percentage,data_20[i])
+    percentage=cbind(percentage,data_50[i])
   }
   
 }
-
-
-Graph(new_Best_matriz,pos,percentage,Matriz20)
-
+Graph(new_Best_matriz,pos,percentage,Matriz50)
 
 
 # 
