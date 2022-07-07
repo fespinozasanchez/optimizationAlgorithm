@@ -1,8 +1,7 @@
 library(readr)
-library(patchwork)
 require(pacman)
 
-pacman::p_load(raster, ggplot2, sf, tidyverse)
+pacman::p_load(raster,ggplot2)
 options(max.print=999999)
 
 # Parliaments of 20 Members ----------------------------------------------
